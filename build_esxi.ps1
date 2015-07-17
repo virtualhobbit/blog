@@ -10,7 +10,7 @@ $dnsIP = "192.168.146.204"
 $domainname = "lab.mdb-lab.com"
 $syslog = "udp://192.168.146.205:514"
 
-ForEach ($esxi in $esxi,$esxi2){
+ForEach ($esxi in $esxi1,$esxi2){
 
 # Connect to the ESXi host
 Connect-VIServer -Server $esxi -username $username -password $password
