@@ -58,7 +58,7 @@ $dc = "dc-lon.lab.mdb-lab.com"
 Connect-VIServer -Server $vc -Credential $credential
 
 # Set the vCSA root account password
-Set-VMHostAccount -UserAccount root -password $vcsaRootPW
+# Set-VMHostAccount -UserAccount root -password $vcsaRootPW
 
 # Grant admins in the production domain the Admin role on vCenter
 New-VIPermission -Role Admin -Principal $admins -Entity Datacenters
