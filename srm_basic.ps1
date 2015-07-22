@@ -1,3 +1,7 @@
+# Author:	@virtualhobbit
+# Website:	http://virtualhobbit.com
+# Ref:		Wednesday Tidbit: Protect a VM using SRM and PowerCLI
+
 # Variables
  
 $vc = "vc.nl.mdb-lab.com"
