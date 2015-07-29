@@ -19,7 +19,7 @@ Connect-VIServer $vc -credential $credential
 
 $myCluster = Get-Cluster -Name $cluster
 
-#Create VM
+# Create VM
 New-VM -name $vmName -ResourcePool $myCluster -numcpu $numCPU -memoryMB $numMem -DiskMB $numDisk -datastore $ds -DiskStorageFormat $vmdkFormat -Network $net -guestID $guestOS -cd -Version $ver
 
 # Set network adapter to VMXNET3
