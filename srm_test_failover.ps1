@@ -31,7 +31,7 @@ $RPmoref = $SrmApi.Recovery.ListPlans()[1]
 
 # Set recovery mode to Test
 $RPmode = New-Object VMware.VimAutomation.Srm.Views.SrmRecoveryPlanRecoveryMode
-$RPmode.Value__ = 0
+$RPmode.Value__ = 1
 
 # Begin test
 $RPmoref.Start($RPmode)
