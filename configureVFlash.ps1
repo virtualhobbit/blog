@@ -12,10 +12,11 @@ Import-Module VMware.VimAutomation.Extensions
 $myCluster = Get-Cluster $cluster
 ForEach ($esxi in ($myCluster | Get-VMHost)) {
  
-# Read hosts in hosts.txt   
+# Get current vFRC configuration   
 Write-Host "Getting current vFRC configuration for" $esxi -foregroundcolor "magenta"  
 $vFlashConfig = Get-VMHostVFlashConfiguration -VMHost $esxi
 
+# Get SSD details
 Write-Host "Getting" $esxi "host SSDs to be used by vFRC" -foregroundcolor "magenta"  
 $vFlashDisk = (Get-ScsiLun -VMHost $esxi -CanonicalName mpx.vmhba1:C0:T1:L0 | Get-VMHostDisk)
 
