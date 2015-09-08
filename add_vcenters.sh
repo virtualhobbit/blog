@@ -16,7 +16,7 @@ do
 	if [ $? -eq 0 ]   
 	then   
 		# Register the vCenter with vCOPs
-		vcops-admin register --vc-name $vcname  --vc-server https://$vcip/sdk --user $vcuser --password $vcpass --force
+		vcops-admin register --vc-name $vcname --vc-server https://$vcip/sdk --user $vcuser --password $vcpass --force
 	else
 		# Write error message
 		echo "No connectivity to vCenter" $vcname" at" $vcip". Please check firewall rules"
