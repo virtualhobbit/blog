@@ -51,7 +51,7 @@ $expression1.status = "yellow"
 # Expression 2 - Host profile non-compliant
 $expression2 = New-Object VMware.Vim.EventAlarmExpression
 $expression2.EventType = $null
-$expression2.eventTypeId = "Host compliant with profile"
+$expression2.eventTypeId = "Host non-compliant with profile"
 $expression2.objectType = "HostSystem"
 $expression2.status = "red"
  
