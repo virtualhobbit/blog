@@ -67,4 +67,4 @@ $alarm.setting.toleranceRange = 0
 $alarmMgr.CreateAlarm($entity.MoRef, $alarm)
 
 # Disconnect from vCenter
-Disconnect-VIServer $vc
+Disconnect-VIServer $vc -Confirm:$false
