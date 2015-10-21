@@ -26,12 +26,12 @@ $trigger1.action.Subject = "Host non-compliant with profile"
 $trigger1.Action.CcList = ""
 $trigger1.Action.Body = "" 
   
-# Transition 1a - yellow --> red
+# Transition 1a - yellow ---> red
 $trans1a = New-Object VMware.Vim.AlarmTriggeringActionTransitionSpec
 $trans1a.StartState = "yellow"
 $trans1a.FinalState = "red"
  
-# Transition 1b - red --> yellow
+# Transition 1b - red ---> yellow
 $trans1b = New-Object VMware.Vim.AlarmTriggeringActionTransitionSpec
 $trans1b.StartState = "red"
 $trans1b.FinalState = "yellow"
