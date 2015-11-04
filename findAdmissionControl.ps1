@@ -1,3 +1,7 @@
+# Author:	@virtualhobbit
+# Website:	http://virtualhobbit.com
+# Ref:		http://virtualhobbit.com/2015/11/04/measuring-and-preventing-vsphere-resource-overcommitment
+
 # Variables
 $infile = "C:\vcenters.csv"
 $outfile = "C:\outfile.csv"
