@@ -1,3 +1,7 @@
+# Author:	@virtualhobbit
+# Website:	http://virtualhobbit.com
+# Ref:		http://virtualhobbit.com/2015/10/22/wednesday-tidbit-create-an-alert-for-esxi-host-profile-deviation/
+
 # Variables
 
 $vc = "vcsa.lab.mdb-lab.com"
@@ -7,64 +11,51 @@ $mailto = "virtualhobbit@mdb-lab.com"
 # Connect to vCenter
 Connect-VIServer $vc -credential $credential
 
-$alarmMgr = Get-View AlarmManager
+# Get the Datacenter
 $dc = "London"
 $entity = Get-Datacenter $dc | Get-View
 
-# Create AlarmSpec object
-$alarm = New-Object VMware.Vim.AlarmSpec
-$alarm.Name = "Host Profile violation"
-$alarm.Description = "Monitors host profile deviation"
-$alarm.Enabled = $TRUE
- 
-# Alarm action 
-$alarm.action = New-Object VMware.Vim.GroupAlarmAction
-$trigger1 = New-Object VMware.Vim.AlarmTriggeringAction
-$trigger1.action = New-Object VMware.Vim.SendEmailAction
-$trigger1.action.ToList = $mailTo
-$trigger1.action.Subject = "Host non-compliant with profile"
-$trigger1.Action.CcList = ""
-$trigger1.Action.Body = "" 
-  
-# Transition 1a - yellow ---> red
-$trans1a = New-Object VMware.Vim.AlarmTriggeringActionTransitionSpec
-$trans1a.StartState = "yellow"
-$trans1a.FinalState = "red"
- 
-# Transition 1b - red ---> yellow
-$trans1b = New-Object VMware.Vim.AlarmTriggeringActionTransitionSpec
-$trans1b.StartState = "red"
-$trans1b.FinalState = "yellow"
- 
-$trigger1.TransitionSpecs += $trans1a
-$trigger1.TransitionSpecs += $trans1b
- 
-$alarm.action.action += $trigger1
- 
-# Expression 1 - Host profile compliant
-$expression1 = New-Object VMware.Vim.EventAlarmExpression
-$expression1.EventType = $null
-$expression1.eventTypeId = "Host compliant with profile"
-$expression1.objectType = "HostSystem"
-$expression1.status = "yellow"
- 
-# Expression 2 - Host profile non-compliant
-$expression2 = New-Object VMware.Vim.EventAlarmExpression
-$expression2.EventType = $null
-$expression2.eventTypeId = "Host non-compliant with profile"
-$expression2.objectType = "HostSystem"
-$expression2.status = "red"
- 
-$alarm.expression = New-Object VMware.Vim.OrAlarmExpression
-$alarm.expression.expression += $expression1
-$alarm.expression.expression += $expression2
- 
-$alarm.setting = New-Object VMware.Vim.AlarmSetting
-$alarm.setting.reportingFrequency = 0
-$alarm.setting.toleranceRange = 0
- 
-# Create alarm.
-$alarmMgr.CreateAlarm($entity.MoRef, $alarm)
+# Create the alarmspec object
+$spec = New-Object VMware.Vim.AlarmSpec
+$spec.name = "Host profile deviation"
+$spec.description = "Monitors host profile deviation"
+$spec.enabled = $true
+
+# Expression 1 - Host profile is non-compliant
+$spec.expression = New-Object VMware.Vim.OrAlarmExpression
+$spec.expression.expression = New-Object VMware.Vim.AlarmExpression[] (1)
+$spec.expression.expression[0] = New-Object VMware.Vim.EventAlarmExpression
+$spec.expression.expression[0].eventType = "HostNonCompliantEvent"
+$spec.expression.expression[0].objectType = "HostSystem"
+$spec.expression.expression[0].status = "red"
+
+# Create the alarm action
+$spec.action = New-Object VMware.Vim.GroupAlarmAction
+$spec.action.action = New-Object VMware.Vim.AlarmAction[] (1)
+$spec.action.action[0] = New-Object VMware.Vim.AlarmTriggeringAction
+$spec.action.action[0].action = New-Object VMware.Vim.SendEmailAction
+$spec.action.action[0].action.toList = $mailto
+$spec.action.action[0].action.ccList = ""
+$spec.action.action[0].action.subject = "Host non-compliant with profile"
+$spec.action.action[0].action.body = ""
+$spec.action.action[0].transitionSpecs = New-Object VMware.Vim.AlarmTriggeringActionTransitionSpec[] (1)
+$spec.action.action[0].transitionSpecs[0] = New-Object VMware.Vim.AlarmTriggeringActionTransitionSpec
+$spec.action.action[0].transitionSpecs[0].startState = "yellow"
+$spec.action.action[0].transitionSpecs[0].finalState = "red"
+$spec.action.action[0].transitionSpecs[0].repeats = $false
+$spec.action.action[0].green2yellow = $false
+$spec.action.action[0].yellow2red = $false
+$spec.action.action[0].red2yellow = $false
+$spec.action.action[0].yellow2green = $false
+
+$spec.setting = New-Object VMware.Vim.AlarmSetting
+$spec.setting.toleranceRange = 0
+$spec.setting.reportingFrequency = 0
+
+$_this = Get-View -Id 'AlarmManager-AlarmManager'
+
+# Create alarm
+$_this.CreateAlarm($entity.MoRef, $spec)
 
 # Disconnect from vCenter
 Disconnect-VIServer $vc -Confirm:$false
