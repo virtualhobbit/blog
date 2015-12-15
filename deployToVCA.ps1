@@ -9,7 +9,7 @@ $region = "de-ge"
 $regionstar = $region + "*"
 $ovf = "C:\win2012r2.ovf"
 $ovfName = "Windows Server 2012 R2"
-$myOrgVdc = "mdb-lab.com vDC"
+$myOrgVdc = "virtualhobbitDC"
 $myCatalog = "default-catalog"
 $vApp = "chef-poc"
 $myOrgNetwork = "default-routed-network"
@@ -22,7 +22,7 @@ Connect-PIServer -vCA -credential $credential -WarningAction 0 -ErrorAction 0
 # Connect to compute instance
 Get-PIComputeInstance -Region $regionstar | Connect-PIComputeInstance -WarningAction 0 -ErrorAction 0
 
-# Import Windows Server 2012 R2 OVF
+# Import the Windows Server 2012 R2 OVF
 Import-CIVAppTemplate -SourcePath $ovf -Name $ovfName -OrgVdc $myOrgVdc -Catalog $myCatalog
 
 # Create the vApp
