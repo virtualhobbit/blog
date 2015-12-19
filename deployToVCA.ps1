@@ -33,12 +33,14 @@ $myOrgNetworkConsistent = Get-OrgNetwork -Id (Search-Cloud -QueryType OrgVdcNetw
 $NewVAppNetwork = New-CIVAppNetwork -VApp $vApp -Direct -ParentOrgNetwork $myOrgNetworkConsistent
 
 ForEach ($Name in $boxes){	
-	# Create CentOS virtual machines
-	New-CIVM -Name $name -vApp $vApp -VMTemplate $myTemplate -Confirm:$false
 	
-	# Configure the IP pool
-	Get-CIVM | Get-CINetworkAdapter | Set-CINetworkAdapter -IPAddressAllocationMode Pool -VAppNetwork $NewVAppNetwork -Connected:$true  
-}	
+    # Create CentOS virtual machines
+	New-CIVM -Name $name -vApp $vApp -VMTemplate $myTemplate -Confirm:$false
+
+}
+
+# Configure the IP pool
+Get-CIVM | Get-CINetworkAdapter | Set-CINetworkAdapter -IPAddressAllocationMode Pool -VAppNetwork $NewVAppNetwork -Connected:$true  	
 
 # Start the VMs
 Start-CIVApp -VApp $NewvApp
