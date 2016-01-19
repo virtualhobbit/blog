@@ -4,8 +4,10 @@ $credential = Get-Credential
 $role = "VMware View"
 $viewAccount = "NL\sa_view"
 
-# Connect to vCenter
+# Enter the vCenter name
 $vc = Read-Host "Enter the vCenter Server name"
+
+# Connect to vCenter
 Connect-VIServer -Server $vc -Credential $credential
 
 # Define privilege
