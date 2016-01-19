@@ -19,3 +19,6 @@ $rootFolder = Get-Folder -NoRecursion
 
 # Assign permission to domain account
 $myPermission = New-VIPermission -Entity $rootFolder -Principal $viewAccount -Role $role -Propagate:$true
+
+# Disconnect from vCenter
+Disconnect-VIServer $vc -Confirm:$false
