@@ -23,7 +23,6 @@ if ($rfc -eq [string]::empty){
 	Exit
 }
 
-
 # Import modules
 Import-Module ActiveDirectory
 Import-Module GroupPolicy
