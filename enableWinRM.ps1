@@ -10,6 +10,8 @@ $defaultNC = ( [ADSI]"LDAP://RootDSE" ).defaultNamingContext.Value
 $domainRoot = $defaultNC
 $WMIFilterName = 'Windows 2008 R2 onwards'
 
+Set-ExecutionPolicy Bypass
+
 Write-Host -ForegroundColor Magenta "Warning! Before starting, make sure you download the GPWmiFilter.psm1 from:"
 write-host "`n"
 Write-Host -ForegroundColor Green "     http://gallery.technet.microsoft.com/scriptcenter/Group-Policy-WMI-filter-38a188f3"
