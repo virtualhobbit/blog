@@ -35,6 +35,10 @@ if(!(Get-Module "GPWmiFilter")){
 	Exit
 }
 
+Get-Module | Out-File -FilePath C:\mods.txt
+
+Exit
+
 # Create GPO shell
 $GPO = New-GPO -Name $GPOname
 
