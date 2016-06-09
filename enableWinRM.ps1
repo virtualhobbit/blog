@@ -1,6 +1,6 @@
 # Author:	@virtualhobbit
 # Website:	http://virtualhobbit.com
-# Ref:		http://virtualhobbit.com/2016/06/08/wednesday-tidbit-using-powershell-to-create-group-policy-objects
+# Ref:		http://virtualhobbit.com/2015/07/17/building-an-advanced-lab-using-vmware-vrealize-automation-part-6-deploy-and-configure-the-vcenter-server-appliance
 
 # Variables
 
@@ -10,20 +10,22 @@ $defaultNC = ( [ADSI]"LDAP://RootDSE" ).defaultNamingContext.Value
 $domainRoot = $defaultNC
 $WMIFilterName = 'Windows 2008 R2 onwards'
 
-Set-ExecutionPolicy Bypass
-
 Write-Host -ForegroundColor Magenta "Warning! Before starting, make sure you download the GPWmiFilter.psm1 from:"
 write-host "`n"
 Write-Host -ForegroundColor Green "     http://gallery.technet.microsoft.com/scriptcenter/Group-Policy-WMI-filter-38a188f3"
 write-host "`n"
 Write-Host -ForegroundColor Magenta "And store in the same folder as this script. Otherwise this script will not work."
 
+# Get the RC number, exit if process not followed
 $rfc = Read-Host "Before we start, please enter the RFC number:"
 if ($rfc -eq [string]::empty){
     Write-Host -ForegoundColor Red "Error: The RFC cannot be blank. Exiting"
 	
 	Exit
 }
+
+# Unblock module
+Unblock-File $modName
 
 # Import modules
 Import-Module ActiveDirectory
@@ -35,10 +37,6 @@ if(!(Get-Module "GPWmiFilter")){
 	Exit
 }
 
-Get-Module | Out-File -FilePath C:\mods.txt
-
-Exit
-
 # Create GPO shell
 $GPO = New-GPO -Name $GPOname
 
@@ -46,7 +44,7 @@ $GPO = New-GPO -Name $GPOname
 $GPO.GpoStatus = "UserSettingsDisabled"
 
 # Set the RFC number as the description
-$GPO.Description = "Created as part of RFC # $rfc" 
+$GPO.Description = "Created as part of RFC $rfc" 
 
 # Create WMI Filter
 $filter = New-GPWmiFilter -Name $WMIFilterName -Expression 'SELECT * FROM Win32_OperatingSystem WHERE Version LIKE "6.0%" OR Version LIKE "6.1%" OR Version LIKE "6.2%" OR Version LIKE "6.3%"' -Description 'Queries for Windows Server 2008 R2 onwards' -PassThru
