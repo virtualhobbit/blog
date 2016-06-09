@@ -1,9 +1,8 @@
 # Author:	@virtualhobbit
 # Website:	http://virtualhobbit.com
-# Ref:		http://virtualhobbit.com/2015/07/17/building-an-advanced-lab-using-vmware-vrealize-automation-part-6-deploy-and-configure-the-vcenter-server-appliance
+# Ref:		https://virtualhobbit.com/2016/06/08/wednesday-tidbit-using-powershell-to-create-group-policy-objects/
 
 # Variables
-
 $modName = "C:\GPWmiFilter.psm1"
 $GPOname = "Enable WinRM on 2008 R2+ servers"
 $defaultNC = ( [ADSI]"LDAP://RootDSE" ).defaultNamingContext.Value
@@ -16,7 +15,7 @@ Write-Host -ForegroundColor Green "     http://gallery.technet.microsoft.com/scr
 write-host "`n"
 Write-Host -ForegroundColor Magenta "And store in the same folder as this script. Otherwise this script will not work."
 
-# Get the RC number, exit if process not followed
+# Get the RFC number, exit if process not followed
 $rfc = Read-Host "Before we start, please enter the RFC number:"
 if ($rfc -eq [string]::empty){
     Write-Host -ForegoundColor Red "Error: The RFC cannot be blank. Exiting"
