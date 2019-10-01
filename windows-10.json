@@ -1,0 +1,66 @@
+{
+    "builders": [
+      {
+        "type": "vsphere-iso",
+
+        "vcenter_server":      "{{user `vcenter_server`}}",
+        "username":            "{{user `username`}}",
+        "password":            "{{user `password`}}",
+        "insecure_connection": "true",
+
+        "vm_name": "Windows 10 (LC) (PILOT)",
+        "datastore": "{{user `datastore`}}",
+        "create_snapshot": "false",
+        "cluster": "{{user `cluster`}}",
+        "network": "{{user `network`}}",
+        "boot_order": "disk,cdrom",
+
+        "vm_version":       15,  
+        "guest_os_type": "windows9_64Guest",
+
+        "communicator": "winrm",
+        "winrm_username": "{{user `winrm_username`}}",
+        "winrm_password": "{{user `winrm_password`}}",
+
+        "CPUs":             2,
+        "RAM":              8192,
+        "RAM_reserve_all":  true,
+
+        "disk_controller_type":  "pvscsi",
+        "disk_size":        51200,
+        "disk_thin_provisioned": true,
+
+        "network_card": "vmxnet3",
+
+        "iso_paths": [
+        "[{{user `datastore_iso`}}] en-gb_windows_10_business_editions_version_1903_x64_dvd_4170a06f.iso",
+        "[{{user `datastore_iso`}}] VMware-tools-windows-10.3.10-12406962.iso"
+        ],
+
+        "floppy_files": [
+          "{{template_dir}}/setup/"
+        ],
+        "floppy_img_path": "[{{user `datastore`}}] Floppies/pvscsi-Windows8.flp"
+      }
+    ],
+
+    "provisioners": [
+      {
+        "type": "powershell",
+        "inline": [
+          "Get-AppXPackage -AllUsers | Where {($_.name -notlike \"Photos\") -and ($_.Name -notlike \"Calculator\") -and ($_.Name -notlike \"Store\")} | Remove-AppXPackage -ErrorAction SilentlyContinue",
+          "Get-AppXProvisionedPackage -Online | Where {($_.DisplayName -notlike \"Photos\") -and ($_.DisplayName -notlike \"Calculator\") -and ($_.DisplayName -notlike \"Store\")} | Remove-AppXProvisionedPackage -Online -ErrorAction SilentlyContinue"     
+        ]
+      },
+      {
+        "type": "powershell",
+        "scripts": [
+          "{{template_dir}}/setup/certs.ps1",
+          "{{template_dir}}/setup/dem.ps1",
+          "{{template_dir}}/setup/appvolumes.ps1",
+          "{{template_dir}}/setup/agent.ps1",
+          "{{template_dir}}/setup/updates.ps1"
+        ]
+      }
+    ]
+}

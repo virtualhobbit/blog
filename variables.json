@@ -1,0 +1,11 @@
+{
+    "vcenter_server":"",
+    "username":"",
+    "password":"",
+    "datastore":"",
+    "datastore_iso":"",
+    "cluster": "",
+    "network": "",
+    "winrm_username": "",
+    "winrm_password": ""
+}
