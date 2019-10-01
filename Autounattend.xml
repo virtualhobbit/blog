@@ -90,7 +90,7 @@
                 <Enabled>true</Enabled>
                 <Username>Administrator</Username>
                 <Password>
-                    <Value>VMware1</Value>
+                    <Value>VMware1!</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <LogonCount>1</LogonCount>
