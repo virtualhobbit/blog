@@ -62,7 +62,7 @@ if (!(Get-InstalledModule -Name $psMod)) {
 Set-PAServer LE_PROD
  
 # Order the certificate
-New-PACertificate $hostCert -AcceptTOS -DnsPlugin $dnsPlugin -PluginArgs $r53Params -Contact $email -Verbose -Force
+New-PACertificate $dnsName -AcceptTOS -DnsPlugin $dnsPlugin -PluginArgs $r53Params -Contact $email -Verbose -Force
 $newCert = Get-PACertificate
 
 # Convert private key to one-liner
